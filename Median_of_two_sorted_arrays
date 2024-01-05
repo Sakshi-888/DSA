@@ -113,8 +113,34 @@ public:
             {
                 element2 = nums1[i];
             }
+            i++;
+            k++;
+        }
+        while (j < n)
+        {
+            if (k == idx1)
+            {
+                element1 = nums2[j];
+            }
+
+            if (k == idx2)
+            {
+                element2 = nums2[j];
+            }
+            j++;
+            k++;
         }
 
-        whil
+        if (size % 2 == 1)
+        {
+            return element2;
+        }
+        else
+        {
+            return double((element1 + element2) / 2.0);
+        }
+
+       
+        
     }
 };
