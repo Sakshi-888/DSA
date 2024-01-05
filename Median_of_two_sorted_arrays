@@ -1,18 +1,147 @@
-#include<iostream>
-using namespace std;
-int main()
+// Brute Force(Approach 1)
+// Time Complexity = 0(m+n)
+// Space Complexity = 0(m+n)
+
+class Solution
 {
-   vector<int> arr;
-   arr.push_back(0);
-   arr.push_back(3);
+public:
+    double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
+    {
+        int m = nums1.size();
+        int n = nums2.size();
+        vector<int> nums3(m + n);
+        int i = 0, j = 0;
+        int k = 0;
 
-   arr.push_back(8);
+        while (i < m && j < n)
+        {
+            if (nums1[i] < nums2[j])
+            {
+                nums3[k++] = nums1[i++];
+            }
+            else
+            {
+                nums3[k++] = nums2[j++];
+            }
+        }
 
-   arr.push_back(9);
+        while (i < m)
+        {
+            nums3[k++] = nums1[i++];
+        }
 
-for(int i=0;i<5;i++)
+        while (j < n)
+        {
+            nums3[k++] = nums2[j++];
+        }
+
+        int size = m + n;
+        // if size of nums3 is odd
+        if (size % 2 != 1)
+        {
+            return nums3[size / 2];
+        }
+        // if size of nums3 is even
+        else
+        {
+            return double(nums3[size / 2] + nums3[(size / 2) - 1]) / 2.0;
+        }
+    }
+};
+
+// Better Solution (optimizing space from approach 1)
+// Time complexity = O(m+n)
+// Space complexity = O(1)
+
+class Solution
 {
-    cout<<arr[i];
-}
-return 0;
-}
+public:
+    double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
+    {
+        int m = nums1.size();
+        int n = nums2.size();
+
+        int size = m + n;
+
+        int idx1 = size / 2 - 1;
+        int element1 = -1;
+
+        int idx2 = size / 2;
+        int element2 = -1;
+
+        int i = 0, j = 0, k = 0;
+
+        while (i < m && j < n)
+        {
+            if (nums1[i] < nums2[j])
+            {
+                if (k == idx1)
+                {
+                    element1 = nums1[i];
+                }
+
+                if (k == idx2)
+                {
+                    element2 = nums1[i];
+                }
+
+                i++;
+            }
+
+            else
+            {
+                if (k == idx1)
+                {
+                    element1 = nums2[j];
+                }
+
+                if (k == idx2)
+                {
+                    element2 = nums2[j];
+                }
+
+                j++;
+            }
+            k++;
+        }
+
+        while (i < m)
+        {
+            if (k == idx1)
+            {
+                element1 = nums1[i];
+            }
+
+            if (k == idx2)
+            {
+                element2 = nums1[i];
+            }
+            i++;
+            k++;
+        }
+
+        while (j < n)
+        {
+            if (k == idx1)
+            {
+                element1 = nums2[j];
+            }
+
+            if (k == idx2)
+            {
+                element2 = nums2[j];
+            }
+            j++;
+            k++;
+        }
+
+        if (size % 2 == 1)
+        {
+            return element2;
+        }
+        else
+        {
+            return double(element1 + element2) / 2.0;
+        }
+    }
+};
